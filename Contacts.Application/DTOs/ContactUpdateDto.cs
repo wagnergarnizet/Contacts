@@ -1,13 +1,17 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Contacts.Domain.Entities
+namespace Contacts.Application.DTOs
 {
-    public class Contact
+    public class ContactUpdateDto
     {
+        [Required]
         [Key]
         public int Id { get; set; }
-
         [Required(ErrorMessage = "Nome é obrigatório")]
         [StringLength(100, ErrorMessage = "Nome não pode ter mais de 100 caracteres")]
         public required string Name { get; set; }
@@ -25,5 +29,6 @@ namespace Contacts.Domain.Entities
         [Required(ErrorMessage = "Email é obrigatório")]
         [EmailAddress(ErrorMessage = "Email inválido")]
         public required string Email { get; set; }
+
     }
 }

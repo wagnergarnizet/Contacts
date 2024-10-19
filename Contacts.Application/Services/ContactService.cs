@@ -1,5 +1,6 @@
 ﻿// Contacts.Application/Services/ContactService.cs
 using Contacts.Domain.Entities;
+using Contacts.Application.DTOs;
 using Contacts.Domain.Repositories;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,37 +17,86 @@ namespace Contacts.Application.Services
             _contactRepository = contactRepository;
         }
 
-        public async Task AddContactAsync(Contact contact)
+        public async Task AddContactAsync(ContactCreateDto contactCreateDto)
         {
-            ValidateContact(contact);
+
+            var contact = new Contact
+            {
+                Name = contactCreateDto.Name,
+                Email = contactCreateDto.Email,
+                DDD = contactCreateDto.DDD,
+                Phone = contactCreateDto.Phone
+            };
             await _contactRepository.AddAsync(contact);
         }
 
-        public async Task UpdateContactAsync(Contact contact)
+        public async Task UpdateContactAsync(ContactUpdateDto contactUpdateDto)
         {
-            ValidateContact(contact);
+            var contact = await _contactRepository.GetByIdAsync(contactUpdateDto.Id);
+            if (contact == null) return;
+            contact.Name = contactUpdateDto.Name;
+            contact.Email = contactUpdateDto.Email;
+            contact.DDD = contactUpdateDto.DDD;
+            contact.Phone = contactUpdateDto.Phone;
+
             await _contactRepository.UpdateAsync(contact);
         }
 
-        public async Task<IEnumerable<Contact>> GetAllContactsAsync()
+        public async Task<IEnumerable<ContactDto>> GetAllContactsAsync()
         {
+            var contacts = await _contactRepository.GetAllAsync();
+            var contactDtos = new List<ContactDto>();
 
-            return await _contactRepository.GetAllAsync();
+            foreach (var contact in contacts)
+            {
+                contactDtos.Add(new ContactDto
+                {
+                    Id = contact.Id,
+                    Name = contact.Name,
+                    Email = contact.Email,
+                    DDD = contact.DDD,
+                    Phone = contact.Phone
+                });
+            }
+
+            return contactDtos;
         }
 
-        public async Task<IEnumerable<Contact>> GetContactsByDDDAsync(string ddd)
+        public async Task<ContactDto?> GetContactByIdAsync(int id)
         {
-            return await _contactRepository.GetByDDDAsync(ddd);
+            var contact = await _contactRepository.GetByIdAsync(id);
+            if (contact == null) return null;
+
+            return new ContactDto
+            {
+                Id = contact.Id,
+                Name = contact.Name,
+                Email = contact.Email,
+                DDD = contact.DDD,
+                Phone = contact.Phone
+            };
         }
 
-        public async Task DeleteContactAsync(int id)
+        public async Task<IEnumerable<ContactDto>> GetContactsByDDDAsync(string ddd)
         {
-            await _contactRepository.DeleteAsync(id);
+            var contacts = await _contactRepository.GetByDDDAsync(ddd);
+            var contactDtos = contacts.Select(contact => new ContactDto
+            {
+                Id = contact.Id,
+                Name = contact.Name,
+                Email = contact.Email,
+                DDD = contact.DDD,
+                Phone = contact.Phone
+            });
+
+            return contactDtos;
         }
-        private void ValidateContact(Contact contact)
+
+        public async Task DeleteContactAsync(ContactDeleteDto contactDeleteDto)
         {
-            var validationContext = new ValidationContext(contact);
-            Validator.ValidateObject(contact, validationContext, validateAllProperties: true);
+            await _contactRepository.DeleteAsync(contactDeleteDto.Id);
         }
+
+
     }
 }

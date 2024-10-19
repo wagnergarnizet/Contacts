@@ -1,9 +1,13 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Contacts.Domain.Entities
+namespace Contacts.Application.DTOs
 {
-    public class Contact
+    public class ContactDto
     {
         [Key]
         public int Id { get; set; }
@@ -25,5 +29,6 @@ namespace Contacts.Domain.Entities
         [Required(ErrorMessage = "Email é obrigatório")]
         [EmailAddress(ErrorMessage = "Email inválido")]
         public required string Email { get; set; }
+
     }
 }
