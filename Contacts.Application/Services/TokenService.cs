@@ -24,11 +24,19 @@ namespace Contacts.Application.Services
 
         public string GetToken(Usuario usuario)
         {
-            var usuarioExiste = ListaUsuario.Usuarios.Any(u => u.Username == usuario.Username && u.Password == usuario.Password);
+            var usuarioExiste = ListaUsuario.Usuarios.Any(u => u.Username == usuario.Username && u.Password == usuario.Password).GetHashCode();
 
-            if (!usuarioExiste)
+            TipoPermissaoSistema permisao;
+
+            if (usuarioExiste == 0)
+            {
                 return string.Empty;
-
+            }
+            else
+            {
+                var user = ListaUsuario.Usuarios.FirstOrDefault(u => u.Username == usuario.Username && u.Password == usuario.Password);
+                permisao = user?.PermissaoSistema ?? TipoPermissaoSistema.Admin;
+            }
             var tokeHandler = new JwtSecurityTokenHandler();
 
             var chaveCriptografia = Encoding.ASCII.GetBytes(_configuration.GetValue<string>("SecretJWT") ?? string.Empty);
@@ -38,7 +46,7 @@ namespace Contacts.Application.Services
                 Subject = new System.Security.Claims.ClaimsIdentity(new[]
                 {
                     new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, usuario.Username),
-                    new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Role, usuario.PermissaoSistema.ToString()),
+                    new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Role, permisao.ToString()),
 
                     new System.Security.Claims.Claim("Claim_Personalizada_1", "Claim_1"),
                     new System.Security.Claims.Claim("Claim_Personalizada_2", "Claim_2")

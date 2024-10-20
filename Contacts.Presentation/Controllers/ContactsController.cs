@@ -26,7 +26,7 @@ namespace Contacts.Presentation.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = nameof(TipoPermissaoSistema.Admin))]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddContact(ContactCreateDto contact)
         {
             _logger.LogInformation("Adicionando novo contato");
@@ -35,8 +35,7 @@ namespace Contacts.Presentation.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = nameof(TipoPermissaoSistema.Admin))]
-        [Authorize(Roles = nameof(TipoPermissaoSistema.User))]
+        [Authorize(Roles = "Admin,User")]
         public async Task<IActionResult> UpdateContact(ContactUpdateDto contact)
         {
             _logger.LogInformation("Atualizando contato de ID {ID}", contact.Id);
@@ -68,7 +67,7 @@ namespace Contacts.Presentation.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = nameof(TipoPermissaoSistema.Admin))]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteContact(int id)
         {
             _logger.LogInformation("Deletando contato de ID {ID}", id);
