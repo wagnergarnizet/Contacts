@@ -2,6 +2,7 @@
 using Contacts.Application.DTOs;
 using Contacts.Application.Services;
 using Contacts.Domain.Entities;
+using Contacts.Presentation.Logging;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -70,6 +71,7 @@ namespace Contacts.Presentation.Controllers
         public async Task<IEnumerable<ContactDto>> GetContactsByDDD(string ddd)
         {
             _logger.LogInformation("Buscando contatos pelo DDD {DDD}", ddd);
+            CustomLogger.Arquivo = true;
             return await _contactService.GetContactsByDDDAsync(ddd);
         }
     }

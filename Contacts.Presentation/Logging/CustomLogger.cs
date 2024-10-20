@@ -6,6 +6,7 @@ namespace Contacts.Presentation.Logging
 
         private readonly string loggerName;
         private readonly CustomLoggerProviderConfiguration loggerConfig;
+        public static bool Arquivo { get; set; } = false;
 
         public CustomLogger(string loggerName, CustomLoggerProviderConfiguration loggerConfig)
         {
@@ -27,7 +28,33 @@ namespace Contacts.Presentation.Logging
         {
             string message = $"Log de Execução: {logLevel}: {eventId.Id} - {formatter(state, exception)}";
 
-            Console.WriteLine(message);
+            if (Arquivo)
+            {
+                ExcreverTextoNoArquivo(message);
+            }
+            else
+            {
+                Console.WriteLine(message);
+            }
+        }
+
+        private void ExcreverTextoNoArquivo(string message)
+        {
+            string caminhoArquivo = Environment.CurrentDirectory + @$"\log-{DateTime.Now:yyyy-MM-dd}.txt";
+            if (!File.Exists(caminhoArquivo))
+            {
+                using (StreamWriter sw = File.CreateText(caminhoArquivo))
+                {
+                    sw.WriteLine(message);
+                }
+            }
+            else
+            {
+                using (StreamWriter sw = File.AppendText(caminhoArquivo))
+                {
+                    sw.WriteLine(message);
+                }
+            }
         }
     }
 }
