@@ -3,7 +3,9 @@ using Contacts.Application.Services;
 using Contacts.Domain.Repositories;
 using Contacts.Infrastructure.Data;
 using Contacts.Infrastructure.Repositories;
+using Contacts.Presentation.Logging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,14 @@ builder.Services.AddScoped<ContactService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddProvider(
+    new CustomLoggerProvider(
+        new CustomLoggerProviderConfiguration
+        {
+            LogLevel = LogLevel.Information,
+        }));
 
 var app = builder.Build();
 
