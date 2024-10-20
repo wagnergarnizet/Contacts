@@ -7,3 +7,18 @@ Log de Execução: Information: 20101 - Executed DbCommand (46ms) [Parameters=[@
 SELECT `c`.`Id`, `c`.`DDD`, `c`.`Email`, `c`.`Name`, `c`.`Phone`
 FROM `Contacts` AS `c`
 WHERE `c`.`DDD` = @__ddd_0
+Log de Execução: Information: 0 - Buscando contatos pelo DDD 11
+Log de Execução: Information: 20101 - Executed DbCommand (80ms) [Parameters=[@__ddd_0='?' (Size = 2)], CommandType='Text', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`DDD`, `c`.`Email`, `c`.`Name`, `c`.`Phone`
+FROM `Contacts` AS `c`
+WHERE `c`.`DDD` = @__ddd_0
+Log de Execução: Information: 0 - Buscando contatos pelo DDD 11
+Log de Execução: Information: 20101 - Executed DbCommand (63ms) [Parameters=[@__ddd_0='?' (Size = 2)], CommandType='Text', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`DDD`, `c`.`Email`, `c`.`Name`, `c`.`Phone`
+FROM `Contacts` AS `c`
+WHERE `c`.`DDD` = @__ddd_0
+Log de Execução: Information: 0 - Buscando contatos pelo DDD 11
+Log de Execução: Information: 20101 - Executed DbCommand (77ms) [Parameters=[@__ddd_0='?' (Size = 2)], CommandType='Text', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`DDD`, `c`.`Email`, `c`.`Name`, `c`.`Phone`
+FROM `Contacts` AS `c`
+WHERE `c`.`DDD` = @__ddd_0
