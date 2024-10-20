@@ -24,7 +24,7 @@ namespace Contacts.Application.Services
 
         public string GetToken(Usuario usuario)
         {
-            var usuarioExiste = ListaUsuario.Usuarios.Any(u => u.Username == usuario.Username && u.Password == usuario.Password).GetHashCode();
+            int usuarioExiste = ListaUsuario.Usuarios?.Any(u => u.Username == usuario.Username && u.Password == usuario.Password) ?? false ? 1 : 0;
 
             TipoPermissaoSistema permisao;
 
@@ -34,7 +34,7 @@ namespace Contacts.Application.Services
             }
             else
             {
-                var user = ListaUsuario.Usuarios.FirstOrDefault(u => u.Username == usuario.Username && u.Password == usuario.Password);
+                var user = ListaUsuario.Usuarios?.FirstOrDefault(u => u.Username == usuario.Username && u.Password == usuario.Password);
                 permisao = user?.PermissaoSistema ?? TipoPermissaoSistema.Admin;
             }
             var tokeHandler = new JwtSecurityTokenHandler();
@@ -45,11 +45,9 @@ namespace Contacts.Application.Services
             {
                 Subject = new System.Security.Claims.ClaimsIdentity(new[]
                 {
-                    new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, usuario.Username),
-                    new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Role, permisao.ToString()),
+                    new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, usuario.Username ?? string.Empty),
+                    new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Role, permisao.ToString())
 
-                    new System.Security.Claims.Claim("Claim_Personalizada_1", "Claim_1"),
-                    new System.Security.Claims.Claim("Claim_Personalizada_2", "Claim_2")
             }),
                 //tempo de expiração do token
                 Expires = DateTime.UtcNow.AddHours(1),
