@@ -4,10 +4,17 @@ using Contacts.Domain.Repositories;
 using Contacts.Infrastructure.Data;
 using Contacts.Infrastructure.Repositories;
 using Contacts.Presentation.Logging;
+using Contacts.Presentation.Middleware;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 builder.Services.AddDbContext<ContactsDbContext>(options =>
@@ -16,7 +23,7 @@ builder.Services.AddDbContext<ContactsDbContext>(options =>
         mySqlOptions => mySqlOptions.MigrationsAssembly("Contacts.Infrastructure")));
 
 
-
+builder.Services.AddSingleton<iTokenService, TokenService>();
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
 builder.Services.AddScoped<ContactService>();
 
@@ -32,6 +39,57 @@ builder.Logging.AddProvider(
             LogLevel = LogLevel.Information,
         }));
 
+var _configuration = new  ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .Build();
+var chaveCriptografia = Encoding.ASCII.GetBytes(_configuration.GetValue<string>("SecretJWT") ?? string.Empty);
+
+builder.Services.AddAuthentication(x => {
+x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(x => {
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(chaveCriptografia),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Autenticação", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = @"Cabeçalho de autorização JWT usando o esquema Bearer. 
+                        Insira 'Bearer' [espaço] e, em seguida, seu token na entrada de texto abaixo.
+                        Exemplo: 'Bearer 12345abcdef'",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,6 +99,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseListaUserMiddleware();
 
 app.UseHttpsRedirection();
 

@@ -3,7 +3,10 @@ using Contacts.Application.DTOs;
 using Contacts.Application.Services;
 using Contacts.Domain.Entities;
 using Contacts.Presentation.Logging;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -23,6 +26,7 @@ namespace Contacts.Presentation.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddContact(ContactCreateDto contact)
         {
             _logger.LogInformation("Adicionando novo contato");
@@ -31,6 +35,7 @@ namespace Contacts.Presentation.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin,User")]
         public async Task<IActionResult> UpdateContact(ContactUpdateDto contact)
         {
             _logger.LogInformation("Atualizando contato de ID {ID}", contact.Id);
@@ -39,6 +44,7 @@ namespace Contacts.Presentation.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IEnumerable<ContactDto>> GetAllContacts()
         {
             _logger.LogInformation("Buscando todos os contatos");
@@ -46,6 +52,7 @@ namespace Contacts.Presentation.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<ContactDto>> GetContactById(int id)
         {
             _logger.LogInformation("Buscando contato de ID {ID}", id);
@@ -60,6 +67,7 @@ namespace Contacts.Presentation.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteContact(int id)
         {
             _logger.LogInformation("Deletando contato de ID {ID}", id);
@@ -68,11 +76,23 @@ namespace Contacts.Presentation.Controllers
         }
 
         [HttpGet("ddd/{ddd}")]
+        [AllowAnonymous]
         public async Task<IEnumerable<ContactDto>> GetContactsByDDD(string ddd)
         {
-            _logger.LogInformation("Buscando contatos pelo DDD {DDD}", ddd);
             CustomLogger.Arquivo = true;
-            return await _contactService.GetContactsByDDDAsync(ddd);
+            _logger.LogInformation("Buscando contatos pelo DDD {DDD}", ddd);
+
+            
+            try
+            {
+                return await _contactService.GetContactsByDDDAsync(ddd);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                return Enumerable.Empty<ContactDto>();
+            }
+
         }
     }
 }
