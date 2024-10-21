@@ -18,8 +18,21 @@ namespace Contacts.Presentation.Controllers
         /// <summary>
         /// Metodo para fazer o login do usuario e retornar o token para a autenticação
         /// </summary>
+        /// <remarks>
+        /// Exemplo de Requisição: Não é ncessário informar o ID e o Tipo da Permissão
+        /// {
+        /// "username": "admin",
+        /// "password": "admin"
+        /// }
+        /// ou
+        /// {
+        /// "username": "guest",
+        /// "password": "guest"
+        /// }
+        /// </remarks>
         /// <param name="usuario">Realizar o Login com os usários admin,user ou guest</param>
-        /// <returns></returns>
+        /// <returns>Irá retornar o token para realizar o login no Swagger</returns>
+        /// <response code="200">Sucesso na execução - pode serguir com o Token</response>
         [HttpPost]
         public IActionResult GetToken([FromBody] Usuario usuario)
         {
