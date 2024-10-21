@@ -15,6 +15,11 @@ namespace Contacts.Presentation.Controllers
             _tokenService = tokenService;
         }
 
+        /// <summary>
+        /// Metodo para fazer o login do usuario e retornar o token para a autenticação
+        /// </summary>
+        /// <param name="usuario">Realizar o Login com os usários admin,user ou guest</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult GetToken([FromBody] Usuario usuario)
         {

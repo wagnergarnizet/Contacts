@@ -25,6 +25,12 @@ namespace Contacts.Presentation.Controllers
             _logger = logger;
         }
 
+
+        /// <summary>
+        /// Metodo para adicionar um novo contato de forma assíncrona.
+        /// </summary>
+        /// <param name="contact">Json com os dados do contato: Nome, DDD, Telefone e Email</param>
+        /// <returns>Adiciona um novo contato no banco de dados</returns>
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddContact(ContactCreateDto contact)
@@ -34,6 +40,13 @@ namespace Contacts.Presentation.Controllers
             return Ok();
         }
 
+
+        /// <summary>
+        /// Método para atualizar um contato de forma assíncrona.
+        /// </summary>
+        /// <param name="contact">Objeto com os dados do contato a ser atualizado
+        /// em formato Json com os dados do contato:ID, Nome, DDD, Telefone e Email</param>
+        /// <returns>Não retorna nenhum valor, atualiza os dados no banco</returns>
         [HttpPut]
         [Authorize(Roles = "Admin,User")]
         public async Task<IActionResult> UpdateContact(ContactUpdateDto contact)
@@ -43,6 +56,11 @@ namespace Contacts.Presentation.Controllers
             return Ok();
         }
 
+
+        /// <summary>
+        /// Método para buscar todos os contatos de forma assíncrona.
+        /// </summary>
+        /// <returns> Retorna uma lista de contatos no formato Json</returns>
         [HttpGet]
         [Authorize]
         public async Task<IEnumerable<ContactDto>> GetAllContacts()
@@ -51,6 +69,13 @@ namespace Contacts.Presentation.Controllers
             return await _contactService.GetAllContactsAsync();
         }
 
+
+
+        /// <summary>
+        /// Método para buscar um contato pelo ID de forma assíncrona.
+        /// </summary>
+        /// <param name="id"> informar o ID do contato</param>
+        /// <returns>Retorna um contato filtrado pelo ID no formato Json</returns>
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<ContactDto>> GetContactById(int id)
@@ -66,6 +91,12 @@ namespace Contacts.Presentation.Controllers
             return contact;
         }
 
+
+        /// <summary>
+        /// Método para deletar um contato de forma assíncrona.
+        /// </summary>
+        /// <param name="id">Objeto com o ID do contato a ser deletado</param>
+        /// <returns>Não retorna nenhum valor, deleta o contato do banco de dados</returns>
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteContact(int id)
@@ -75,6 +106,12 @@ namespace Contacts.Presentation.Controllers
             return Ok();
         }
 
+
+        /// <summary>
+        /// Método para buscar contatos por DDD de forma assíncrona.
+        /// </summary>
+        /// <param name="ddd"> informar o DDD do contato</param>
+        /// <returns> Retorna uma lista de contatos filtrados pelo DDD no formato Json</returns>
         [HttpGet("ddd/{ddd}")]
         [AllowAnonymous]
         public async Task<IEnumerable<ContactDto>> GetContactsByDDD(string ddd)
