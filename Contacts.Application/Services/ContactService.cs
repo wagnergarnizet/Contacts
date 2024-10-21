@@ -17,9 +17,9 @@ namespace Contacts.Application.Services
             _contactRepository = contactRepository;
         }
 
+
         public async Task AddContactAsync(ContactCreateDto contactCreateDto)
         {
-
             var contact = new Contact
             {
                 Name = contactCreateDto.Name,
@@ -29,6 +29,7 @@ namespace Contacts.Application.Services
             };
             await _contactRepository.AddAsync(contact);
         }
+
 
         public async Task UpdateContactAsync(ContactUpdateDto contactUpdateDto)
         {
@@ -41,6 +42,7 @@ namespace Contacts.Application.Services
 
             await _contactRepository.UpdateAsync(contact);
         }
+
 
         public async Task<IEnumerable<ContactDto>> GetAllContactsAsync()
         {
@@ -62,6 +64,7 @@ namespace Contacts.Application.Services
             return contactDtos;
         }
 
+
         public async Task<ContactDto?> GetContactByIdAsync(int id)
         {
             var contact = await _contactRepository.GetByIdAsync(id);
@@ -77,6 +80,7 @@ namespace Contacts.Application.Services
             };
         }
 
+
         public async Task<IEnumerable<ContactDto>> GetContactsByDDDAsync(string ddd)
         {
             var contacts = await _contactRepository.GetByDDDAsync(ddd);
@@ -91,6 +95,7 @@ namespace Contacts.Application.Services
 
             return contactDtos;
         }
+
 
         public async Task DeleteContactAsync(ContactDeleteDto contactDeleteDto)
         {
