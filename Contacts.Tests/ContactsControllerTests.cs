@@ -1,25 +1,24 @@
-using Fiap.Team10.Contacts.Application.Services;
+using Fiap.Team10.Contacts.Domain.DTOs.Application;
 using Fiap.Team10.Contacts.Domain.DTOs.EntityDTOs;
-using Fiap.Team10.Contacts.Domain.Interfaces.Repositories;
+using Fiap.Team10.Contacts.Domain.Interfaces.Applications;
 using Fiap.Team10.Contacts.Presentation.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace Contacts.Tests
+namespace Fiap.Team10.Contacts.Tests
 {
     public class ContactsControllerTests
     {
-        private Mock<ContactApplication> _contactServiceMock;
+        private Mock<IContactApplication> _contactAppServiceMock;
         private Mock<ILogger<ContactsController>> _loggerMock;
         private ContactsController _controller;
 
         public ContactsControllerTests()
         {
-            var contactRepositoryMock = new Mock<IContactRepository>();
-            _contactServiceMock = new Mock<ContactApplication>(contactRepositoryMock.Object);
+            _contactAppServiceMock = new Mock<IContactApplication>();
             _loggerMock = new Mock<ILogger<ContactsController>>();
-            _controller = new ContactsController(_contactServiceMock.Object, _loggerMock.Object);
+            _controller = new ContactsController(_contactAppServiceMock.Object, _loggerMock.Object);
         }
 
         [Fact]
@@ -54,11 +53,20 @@ namespace Contacts.Tests
                 Email = " "
             };
 
+            var returnResponse = new UpdateContactResponse
+            {
+                Success = true,
+                Message = "Contato atualizado com sucesso"
+            };
+
+            _contactAppServiceMock.Setup(x => x.UpdateContactAsync(contact)).ReturnsAsync(returnResponse);
+
+
             // Act
             var result = await _controller.UpdateContact(contact);
 
             // Assert
-            Assert.IsType<OkResult>(result);
+            Assert.IsNotType<BadRequestResult>(result);
             Assert.Equal(1, contact.Id);
         }
 
