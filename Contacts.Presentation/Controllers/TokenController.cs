@@ -1,19 +1,14 @@
-﻿using Contacts.Domain.Entities;
-using Contacts.Domain.Repositories;
+﻿using Fiap.Team10.Contacts.Domain.Entities;
+using Fiap.Team10.Contacts.Domain.Interfaces.Applications;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Contacts.Presentation.Controllers
+namespace Fiap.Team10.Contacts.Presentation.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TokenController : Controller
+    public class TokenController(ITokenApplication tokenService) : Controller
     {
-        private readonly iTokenService _tokenService;
-
-        public TokenController(iTokenService tokenService)
-        {
-            _tokenService = tokenService;
-        }
+        private readonly ITokenApplication _tokenService = tokenService;
 
         /// <summary>
         /// Metodo para fazer o login do usuario e retornar o token para a autenticação
@@ -34,7 +29,7 @@ namespace Contacts.Presentation.Controllers
         /// <returns>Irá retornar o token para realizar o login no Swagger</returns>
         /// <response code="200">Sucesso na execução - pode serguir com o Token</response>
         [HttpPost]
-        public IActionResult GetToken([FromBody] Usuario usuario)
+        public IActionResult GetToken([FromBody] User usuario)
         {
             var token = _tokenService.GetToken(usuario);
 

@@ -1,25 +1,23 @@
-using Contacts.Application.DTOs;
-using Contacts.Application.Services;
-using Contacts.Domain.Entities;
-using Contacts.Domain.Repositories;
-using Contacts.Presentation.Controllers;
+using Fiap.Team10.Contacts.Application.Services;
+using Fiap.Team10.Contacts.Domain.DTOs.EntityDTOs;
+using Fiap.Team10.Contacts.Domain.Interfaces.Repositories;
+using Fiap.Team10.Contacts.Presentation.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Xunit;
 
 namespace Contacts.Tests
 {
     public class ContactsControllerTests
     {
-        private Mock<ContactService> _contactServiceMock;
+        private Mock<ContactApplication> _contactServiceMock;
         private Mock<ILogger<ContactsController>> _loggerMock;
         private ContactsController _controller;
 
         public ContactsControllerTests()
         {
             var contactRepositoryMock = new Mock<IContactRepository>();
-            _contactServiceMock = new Mock<ContactService>(contactRepositoryMock.Object);
+            _contactServiceMock = new Mock<ContactApplication>(contactRepositoryMock.Object);
             _loggerMock = new Mock<ILogger<ContactsController>>();
             _controller = new ContactsController(_contactServiceMock.Object, _loggerMock.Object);
         }
@@ -31,7 +29,7 @@ namespace Contacts.Tests
             var contact = new ContactCreateDto
             {
                 Name = "John Doe",
-                DDD = "11",
+                AreaCode = "11",
                 Phone = "123456789",
                 Email = "john.doe@example.com"
             };
@@ -51,7 +49,7 @@ namespace Contacts.Tests
             {
                 Id = 1,
                 Name = "John Doe",
-                DDD = "11",
+                AreaCode = "11",
                 Phone = "123456789",
                 Email = " "
             };

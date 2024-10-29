@@ -1,4 +1,4 @@
-﻿namespace Contacts.Presentation.Logging
+﻿namespace Fiap.Team10.Contacts.Presentation.Logging
 {
     public class CustomLoggerProviderConfiguration
     {

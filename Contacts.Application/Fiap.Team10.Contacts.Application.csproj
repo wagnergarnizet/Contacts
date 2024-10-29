@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Contacts.Domain\Contacts.Domain.csproj" />
+    <ProjectReference Include="..\Contacts.Domain\Fiap.Team10.Contacts.Domain.csproj" />
   </ItemGroup>
 
 </Project>

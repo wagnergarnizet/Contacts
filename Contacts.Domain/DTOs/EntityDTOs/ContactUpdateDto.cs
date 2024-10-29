@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Contacts.Application.DTOs
+namespace Fiap.Team10.Contacts.Domain.DTOs.EntityDTOs
 {
     public class ContactUpdateDto
     {
@@ -19,7 +14,7 @@ namespace Contacts.Application.DTOs
         [Required(ErrorMessage = "DDD é obrigatório")]
         [StringLength(2, MinimumLength = 2, ErrorMessage = "DDD deve conter dois caracteres")]
 
-        public required string DDD { get; set; }
+        public required string AreaCode { get; set; }
 
         [Required(ErrorMessage = "Telefone é obrigatório")]
         [Phone(ErrorMessage = "Não é um formato válido de telefone")]

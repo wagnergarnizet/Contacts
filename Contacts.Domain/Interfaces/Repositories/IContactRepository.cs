@@ -1,9 +1,6 @@
-﻿
-using Contacts.Domain.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using Fiap.Team10.Contacts.Domain.Entities;
 
-namespace Contacts.Domain.Repositories
+namespace Fiap.Team10.Contacts.Domain.Interfaces.Repositories
 {
     public interface IContactRepository
     {
@@ -11,7 +8,7 @@ namespace Contacts.Domain.Repositories
         Task UpdateAsync(Contact contact);
         Task<Contact> GetByIdAsync(int id);
         Task<IEnumerable<Contact>> GetAllAsync();
-        Task<IEnumerable<Contact>> GetByDDDAsync(string ddd);
+        Task<IEnumerable<Contact>> GetByAreaCodeAsync(string ddd);
         Task DeleteAsync(int id);
     }
 }

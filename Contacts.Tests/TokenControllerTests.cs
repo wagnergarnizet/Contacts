@@ -1,9 +1,8 @@
-﻿using Contacts.Domain.Entities;
-using Contacts.Domain.Repositories;
-using Contacts.Presentation.Controllers;
+﻿using Fiap.Team10.Contacts.Domain.Entities;
+using Fiap.Team10.Contacts.Domain.Interfaces.Applications;
+using Fiap.Team10.Contacts.Presentation.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Xunit;
 
 namespace Contacts.Tests
 {
@@ -13,13 +12,13 @@ namespace Contacts.Tests
         public void GetToken_ValidUser_ReturnsOkResultWithToken()
         {
             // Arrange
-            var usuario = new Usuario
+            var usuario = new User
             {
                 Username = "admin",
                 Password = "admin"
             };
 
-            var tokenServiceMock = new Mock<iTokenService>();
+            var tokenServiceMock = new Mock<ITokenApplication>();
             tokenServiceMock.Setup(x => x.GetToken(usuario)).Returns("valid_token");
 
             var controller = new TokenController(tokenServiceMock.Object);
@@ -37,13 +36,13 @@ namespace Contacts.Tests
         public void GetToken_InvalidUser_ReturnsUnauthorizedResult()
         {
             // Arrange
-            var usuario = new Usuario
+            var usuario = new User
             {
                 Username = "invalid",
                 Password = "invalid"
             };
 
-            var tokenServiceMock = new Mock<iTokenService>();
+            var tokenServiceMock = new Mock<ITokenApplication>();
             tokenServiceMock.Setup(x => x.GetToken(usuario)).Returns(string.Empty);
 
             var controller = new TokenController(tokenServiceMock.Object);

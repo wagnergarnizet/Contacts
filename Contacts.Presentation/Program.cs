@@ -1,31 +1,12 @@
-// Contacts.Presentation/Program.cs
-using Contacts.Application.Services;
-using Contacts.Domain.Repositories;
-using Contacts.Infrastructure.Data;
-using Contacts.Infrastructure.Repositories;
-using Contacts.Presentation.Logging;
-using Contacts.Presentation.Middleware;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Fiap.Team10.Contacts.CrossCutting.IoC;
+using Fiap.Team10.Contacts.Presentation.Logging;
+using Fiap.Team10.Contacts.Presentation.Middleware;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-// Add services to the container.
-builder.Services.AddDbContext<ContactsDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
-        new MySqlServerVersion(new Version(8, 0, 21)),
-        mySqlOptions => mySqlOptions.MigrationsAssembly("Contacts.Infrastructure")));
-
-
-builder.Services.AddSingleton<iTokenService, TokenService>();
-builder.Services.AddScoped<IContactRepository, ContactRepository>();
-builder.Services.AddScoped<ContactService>();
+builder.Services.AddDependencyResolver(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -38,27 +19,6 @@ builder.Logging.AddProvider(
         {
             LogLevel = LogLevel.Information,
         }));
-
-var _configuration = new  ConfigurationBuilder()
-    .AddJsonFile("appsettings.json")
-    .Build();
-var chaveCriptografia = Encoding.ASCII.GetBytes(_configuration.GetValue<string>("SecretJWT") ?? string.Empty);
-
-builder.Services.AddAuthentication(x => {
-x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-    .AddJwtBearer(x => {
-    x.RequireHttpsMetadata = false;
-    x.SaveToken = true;
-    x.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(chaveCriptografia),
-        ValidateIssuer = false,
-        ValidateAudience = false
-    };
-});
 
 builder.Services.AddSwaggerGen(c =>
 {

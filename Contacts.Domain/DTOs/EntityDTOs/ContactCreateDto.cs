@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Contacts.Application.DTOs
+namespace Fiap.Team10.Contacts.Domain.DTOs.EntityDTOs
 {
-    public class ContactDto
+    public class ContactCreateDto
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "Nome é obrigatório")]
         [StringLength(100, ErrorMessage = "Nome não pode ter mais de 100 caracteres")]
         public required string Name { get; set; }
@@ -19,7 +11,7 @@ namespace Contacts.Application.DTOs
         [Required(ErrorMessage = "DDD é obrigatório")]
         [StringLength(2, MinimumLength = 2, ErrorMessage = "DDD deve conter dois caracteres")]
 
-        public required string DDD { get; set; }
+        public required string AreaCode { get; set; }
 
         [Required(ErrorMessage = "Telefone é obrigatório")]
         [Phone(ErrorMessage = "Não é um formato válido de telefone")]

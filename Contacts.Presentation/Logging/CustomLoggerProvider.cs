@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace Contacts.Presentation.Logging
+namespace Fiap.Team10.Contacts.Presentation.Logging
 {
     public class CustomLoggerProvider : ILoggerProvider
     {
