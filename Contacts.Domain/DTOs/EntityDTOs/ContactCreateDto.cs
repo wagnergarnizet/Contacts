@@ -1,7 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Fiap.Team10.Contacts.Domain.DTOs.EntityDTOs
 {
+
+    [ExcludeFromCodeCoverage]
     public class ContactCreateDto
     {
         [Required(ErrorMessage = "Nome é obrigatório")]

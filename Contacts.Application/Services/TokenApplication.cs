@@ -1,4 +1,5 @@
 ﻿using Fiap.Team10.Contacts.Domain.Entities;
+using Fiap.Team10.Contacts.Domain.Enumerators;
 using Fiap.Team10.Contacts.Domain.Interfaces.Applications;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;

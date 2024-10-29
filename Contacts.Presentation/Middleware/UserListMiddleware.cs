@@ -1,4 +1,5 @@
 ﻿using Fiap.Team10.Contacts.Domain.Entities;
+using Fiap.Team10.Contacts.Domain.Enumerators;
 
 namespace Fiap.Team10.Contacts.Presentation.Middleware
 {
@@ -13,11 +14,11 @@ namespace Fiap.Team10.Contacts.Presentation.Middleware
 
         public Task Invoke(HttpContext httpContext)
         {
-            UserList.Users = new List<User>{
-                                               new User { Id = 1, Username = "admin", Password = "admin", TypePermission = TypePermission.Admin },
-                                               new User { Id = 2, Username = "user", Password = "user", TypePermission = TypePermission.User },
-                                               new User { Id = 3, Username = "guest", Password = "guest", TypePermission = TypePermission.Guest }
-                                           };
+            UserList.Users = [
+                                 new User { Id = 1, Username = "admin", Password = "admin", TypePermission = TypePermission.Admin },
+                                 new User { Id = 2, Username = "user", Password = "user", TypePermission = TypePermission.User },
+                                 new User { Id = 3, Username = "guest", Password = "guest", TypePermission = TypePermission.Guest }
+                             ];
 
             return _next(httpContext);
         }
@@ -26,8 +27,6 @@ namespace Fiap.Team10.Contacts.Presentation.Middleware
     public static class UserListMiddlewareExtensions
     {
         public static IApplicationBuilder UseListaUserMiddleware(this IApplicationBuilder builder)
-        {
-            return builder.UseMiddleware<UserListMiddleware>();
-        }
+            => builder.UseMiddleware<UserListMiddleware>();        
     }
 }

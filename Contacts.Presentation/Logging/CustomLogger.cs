@@ -1,16 +1,10 @@
 ﻿namespace Fiap.Team10.Contacts.Presentation.Logging
 {
-    public class CustomLogger : ILogger
+    public class CustomLogger(string loggerName, CustomLoggerProviderConfiguration loggerConfig) : ILogger
     {
-        private readonly string loggerName;
-        private readonly CustomLoggerProviderConfiguration loggerConfig;
+        private readonly string loggerName = loggerName;
+        private readonly CustomLoggerProviderConfiguration loggerConfig = loggerConfig;
         public static bool Arquivo { get; set; } = false;
-
-        public CustomLogger(string loggerName, CustomLoggerProviderConfiguration loggerConfig)
-        {
-            this.loggerName = loggerName;
-            this.loggerConfig = loggerConfig;
-        }
 
         public IDisposable? BeginScope<TState>(TState state) where TState : notnull => null;
         
