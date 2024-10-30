@@ -4,7 +4,7 @@ namespace Fiap.Team10.Contacts.Domain.DTOs.Application
 {
 
     [ExcludeFromCodeCoverage]
-    public class UpdateContactResponse
+    public class UpsertContactResponse
     {
         public bool Success { get; set; }
 

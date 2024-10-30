@@ -5,9 +5,9 @@ namespace Fiap.Team10.Contacts.Domain.Interfaces.Applications
 {
     public interface IContactApplication
     {
-        Task AddContactAsync(ContactCreateDto contactCreateDto);
+        Task<UpsertContactResponse> AddContactAsync(ContactCreateDto contactCreateDto);
 
-        Task<UpdateContactResponse> UpdateContactAsync(ContactUpdateDto contactUpdateDto);
+        Task<UpsertContactResponse> UpdateContactAsync(ContactUpdateDto contactUpdateDto);
 
         Task<IEnumerable<ContactDto>> GetAllContactsAsync();
         

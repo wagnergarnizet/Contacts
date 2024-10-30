@@ -8,25 +8,15 @@ namespace Fiap.Team10.Contacts.Domain.Services
     {
         private readonly IContactRepository _contactRepository = contactRepository;
 
-        public async Task InsertAsync(Contact contact) 
+        public async Task InsertAsync(Contact contact)
             => await _contactRepository.AddAsync(contact);
 
         public async Task<Contact> GetByIdAsync(int id)
             => await _contactRepository.GetByIdAsync(id);
 
-        public async Task<bool> UpdateAsync(Contact contactUpdate)
-        {
-            try
-            {
-                await _contactRepository.UpdateAsync(contactUpdate);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }            
-        }
-
+        public async Task UpdateAsync(Contact contactUpdate)
+            => await _contactRepository.UpdateAsync(contactUpdate);
+                    
         public async Task<IEnumerable<Contact>> GetAllAsync()
             => await _contactRepository.GetAllAsync();
 

@@ -13,76 +13,102 @@ namespace Fiap.Team10.Contacts.Application.Services
 
         private readonly ILogger<ContactApplication> _logger;
 
-        public async Task AddContactAsync(ContactCreateDto contactCreateDto)
+        public async Task<UpsertContactResponse> AddContactAsync(ContactCreateDto contactCreateDto)
         {
-            var contact = new Contact
+            var insertResult = new UpsertContactResponse();
+            try
             {
-                Name = contactCreateDto.Name,
-                Email = contactCreateDto.Email,
-                AreaCode = contactCreateDto.AreaCode,
-                Phone = contactCreateDto.Phone
-            };
-            await _contactService.InsertAsync(contact);
+                var contact = new Contact
+                {
+                    Name = contactCreateDto.Name,
+                    Email = contactCreateDto.Email,
+                    AreaCode = contactCreateDto.AreaCode,
+                    Phone = contactCreateDto.Phone
+                };
+
+                await _contactService.InsertAsync(contact);
+
+                insertResult.Success = true;
+                insertResult.Message = "Contato inserido com sucesso.";
+            }
+            catch (Exception e)
+            {
+                insertResult.Success = false;
+                insertResult.Message = $"Ocorreu um problema ao tentar inserir o registro. Erro: {e.Message}";
+                _logger.LogError(insertResult.Message);
+            }
+
+            return insertResult;
         }
 
-        public async Task<UpdateContactResponse> UpdateContactAsync(ContactUpdateDto contactUpdateDto)
+        public async Task<UpsertContactResponse> UpdateContactAsync(ContactUpdateDto contactUpdateDto)
         {
-            var updateResult = new UpdateContactResponse();
-            var contactFound = await _contactService.GetByIdAsync(contactUpdateDto.Id);
-            if (contactFound == null)
+            var updateResult = new UpsertContactResponse();
+            try
             {
-                updateResult.Success = false;
-                updateResult.Message = "Contato não encontrado";
 
-                _logger.LogInformation(updateResult.Message);
-            }
-            else
-            {
-                contactFound.Name = contactUpdateDto.Name;
-                contactFound.Email = contactUpdateDto.Email;
-                contactFound.AreaCode = contactUpdateDto.AreaCode;
-                contactFound.Phone = contactUpdateDto.Phone;
-
-                var updatedContact = await _contactService.UpdateAsync(contactFound);
-
-                if (!updatedContact) 
+                var contactFound = await _contactService.GetByIdAsync(contactUpdateDto.Id);
+                if (contactFound == null)
                 {
                     updateResult.Success = false;
-                    updateResult.Message = "Ocorreu um problema ao tentar atualizar o registro.";
-                    _logger.LogError(updateResult.Message);
+                    updateResult.Message = "Contato não encontrado";
+
+                    _logger.LogInformation(updateResult.Message);
                 }
                 else
                 {
+                    contactFound.Name = contactUpdateDto.Name;
+                    contactFound.Email = contactUpdateDto.Email;
+                    contactFound.AreaCode = contactUpdateDto.AreaCode;
+                    contactFound.Phone = contactUpdateDto.Phone;
+
+                    await _contactService.UpdateAsync(contactFound);
+
                     updateResult.Success = true;
                     updateResult.Message = "Contato alterado com sucesso.";
                 }
+            }
+            catch (Exception e)
+            {
+                updateResult.Success = false;
+                updateResult.Message = $"Ocorreu um problema ao tentar atualizar o registro. Erro: {e.Message}";
+                _logger.LogError(updateResult.Message);
             }
 
             return updateResult;
         }
 
+
         public async Task<IEnumerable<ContactDto>> GetAllContactsAsync()
         {
-            var contacts = await _contactService.GetAllAsync();
-            var contactDtos = new List<ContactDto>();
+            try
+            {
+                var contacts = await _contactService.GetAllAsync();
+                var contactDtos = new List<ContactDto>();
 
-            foreach (var contact in contacts)            
-                contactDtos.Add(new ContactDto
-                                {
-                                    Id = contact.Id,
-                                    Name = contact.Name,
-                                    Email = contact.Email,
-                                    AreaCode = contact.AreaCode,
-                                    Phone = contact.Phone
-                                });            
+                foreach (var contact in contacts)
+                    contactDtos.Add(new ContactDto
+                    {
+                        Id = contact.Id,
+                        Name = contact.Name,
+                        Email = contact.Email,
+                        AreaCode = contact.AreaCode,
+                        Phone = contact.Phone
+                    });
 
-            return contactDtos;
+                return contactDtos;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Ocorreu um erro na consulta de todos os contatos. Erro: {e.Message}");
+                return null;
+            }
         }
 
         public async Task<ContactDto?> GetContactByIdAsync(int id)
         {
             var contact = await _contactService.GetByIdAsync(id);
-            if (contact == null) 
+            if (contact == null)
                 return null;
 
             return new ContactDto
@@ -99,13 +125,13 @@ namespace Fiap.Team10.Contacts.Application.Services
         {
             var contacts = await _contactService.GetByAreaCodeAsync(areaCode);
             var contactDtos = contacts.Select(contact => new ContactDto
-                                              {
-                                                  Id = contact.Id,
-                                                  Name = contact.Name,
-                                                  Email = contact.Email,
-                                                  AreaCode = contact.AreaCode,
-                                                  Phone = contact.Phone
-                                              });
+            {
+                Id = contact.Id,
+                Name = contact.Name,
+                Email = contact.Email,
+                AreaCode = contact.AreaCode,
+                Phone = contact.Phone
+            });
 
             return contactDtos;
         }

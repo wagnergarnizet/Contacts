@@ -8,7 +8,7 @@ namespace Fiap.Team10.Contacts.Domain.Interfaces.Services
 
         Task<Contact> GetByIdAsync(int id);
 
-        Task<bool> UpdateAsync(Contact contactUpdate);
+        Task UpdateAsync(Contact contactUpdate);
 
         Task<IEnumerable<Contact>> GetAllAsync();
 

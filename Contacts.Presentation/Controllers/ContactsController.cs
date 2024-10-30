@@ -23,8 +23,12 @@ namespace Fiap.Team10.Contacts.Presentation.Controllers
         public async Task<IActionResult> AddContact(ContactCreateDto contact)
         {
             _logger.LogInformation("Adicionando novo contato");
-            await _contactService.AddContactAsync(contact);
-            return Ok();
+            var insertedObject = await _contactService.AddContactAsync(contact);
+
+            if (insertedObject.Success)
+                return Ok(insertedObject.Message);
+            else
+                return BadRequest(insertedObject.Message);
         }
 
         /// <summary>
@@ -67,14 +71,15 @@ namespace Fiap.Team10.Contacts.Presentation.Controllers
         [Authorize]
         public async Task<ActionResult<ContactDto>> GetContactById(int id)
         {
-            _logger.LogInformation("Buscando contato de ID {ID}", id);
+            _logger.LogInformation($"Buscando contato de ID {id}");
             var contact = await _contactService.GetContactByIdAsync(id);
             if (contact == null)
             {
-                _logger.LogWarning("Contato de ID {ID} não encontrado", id);
+                _logger.LogWarning($"Contato de ID {id} não encontrado");
                 return NotFound();
             }
-            _logger.LogInformation("Contato de ID {ID} encontrado", id);
+
+            _logger.LogInformation($"Contato de ID {id} encontrado");
             return contact;
         }
 
@@ -103,8 +108,7 @@ namespace Fiap.Team10.Contacts.Presentation.Controllers
         {
             CustomLogger.Arquivo = true;
             _logger.LogInformation("Buscando contatos pelo DDD {DDD}", areaCode);
-
-            
+                        
             try
             {
                 return await _contactService.GetContactsByAreaCodeAsync(areaCode);

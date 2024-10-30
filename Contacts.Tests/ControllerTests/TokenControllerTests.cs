@@ -4,7 +4,7 @@ using Fiap.Team10.Contacts.Presentation.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
-namespace Contacts.Tests
+namespace Fiap.Team10.Contacts.Tests.ControllerTests
 {
     public class TokenControllerTests
     {
