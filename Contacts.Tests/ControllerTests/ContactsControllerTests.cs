@@ -24,13 +24,9 @@ namespace Fiap.Team10.Contacts.Tests.ControllerTests
         [Fact]
         public async Task AddContactApplicationSuccess()
         {
-            var contact = GetInsertDtoObject();
+            var contact = CommonTestData.GetInsertDtoObject();
 
-            var insertReturn = new UpsertContactResponse
-            {
-                Success = true,
-                Message = "Contato inserido com sucesso"
-            };
+            var insertReturn = CommonTestData.GetResponseUpsertObject(true, true);
 
             _contactAppServiceMock.Setup(x => x.AddContactAsync(contact)).ReturnsAsync(insertReturn);
 
@@ -43,13 +39,9 @@ namespace Fiap.Team10.Contacts.Tests.ControllerTests
         [Fact]
         public async Task AddContactApplicationFail()
         {
-            var contact = GetInsertDtoObject();
+            var contact = CommonTestData.GetInsertDtoObject();
 
-            var insertReturn = new UpsertContactResponse
-            {
-                Success = false,
-                Message = "Ocorreu um problema ao tentar inserir o registro. Erro: ERRO-SIMULADO"
-            };
+            var insertReturn = CommonTestData.GetResponseUpsertObject(false, true);
 
             _contactAppServiceMock.Setup(x => x.AddContactAsync(contact)).ReturnsAsync(insertReturn);
 
@@ -62,13 +54,9 @@ namespace Fiap.Team10.Contacts.Tests.ControllerTests
         [Fact]
         public async Task UpdateContactApplicationSuccess()
         {
-            var contact = GetUpdateDtoObject();
+            var contact = CommonTestData.GetUpdateDtoObject();
 
-            var returnResponse = new UpsertContactResponse
-            {
-                Success = true,
-                Message = "Contato atualizado com sucesso"
-            };
+            var returnResponse = CommonTestData.GetResponseUpsertObject(true, false);
 
             _contactAppServiceMock.Setup(x => x.UpdateContactAsync(contact)).ReturnsAsync(returnResponse);
 
@@ -82,13 +70,9 @@ namespace Fiap.Team10.Contacts.Tests.ControllerTests
         [Fact]
         public async Task UpdateContactApplicationFail()
         {
-            var contact = GetUpdateDtoObject();
+            var contact = CommonTestData.GetUpdateDtoObject();
 
-            var returnResponse = new UpsertContactResponse
-            {
-                Success = false,
-                Message = "Ocorreu um problema ao tentar atualizar o registro. Erro: ERRO-SIMULADO"
-            };
+            var returnResponse = CommonTestData.GetResponseUpsertObject(false, false);
 
             _contactAppServiceMock.Setup(x => x.UpdateContactAsync(contact)).ReturnsAsync(returnResponse);
 
@@ -202,24 +186,5 @@ namespace Fiap.Team10.Contacts.Tests.ControllerTests
             _loggerMock.Equals("Não foi possivel recuperar os contatos");
             _contactAppServiceMock.Verify(service => service.GetContactsByAreaCodeAsync(areaCode), Times.Once);
         }
-
-        private ContactCreateDto GetInsertDtoObject()
-            => new()
-            {
-                Name = "Marcelo Cedro",
-                AreaCode = "11",
-                Phone = "982840611",
-                Email = "marceloced@gmail.com"
-            };
-
-        private ContactUpdateDto GetUpdateDtoObject()
-        => new()
-        {
-            Id = 1,
-            Name = "Marcelo Cedro",
-            AreaCode = "11",
-            Phone = "982840611",
-            Email = "marceloced@gmail.com"
-        };
     }
 }

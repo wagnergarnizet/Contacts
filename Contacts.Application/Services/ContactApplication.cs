@@ -11,7 +11,7 @@ namespace Fiap.Team10.Contacts.Application.Services
     {
         private readonly IContactService _contactService = contactService;
 
-        private readonly ILogger<ContactApplication> _logger;
+        private readonly ILogger<ContactApplication> _logger = logger;
 
         public async Task<UpsertContactResponse> AddContactAsync(ContactCreateDto contactCreateDto)
         {
