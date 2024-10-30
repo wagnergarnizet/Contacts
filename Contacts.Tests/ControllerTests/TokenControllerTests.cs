@@ -9,9 +9,8 @@ namespace Fiap.Team10.Contacts.Tests.ControllerTests
     public class TokenControllerTests
     {
         [Fact]
-        public void GetToken_ValidUser_ReturnsOkResultWithToken()
+        public void GetTokenValidUserTokenSuccess()
         {
-            // Arrange
             var usuario = new User
             {
                 Username = "admin",
@@ -23,19 +22,16 @@ namespace Fiap.Team10.Contacts.Tests.ControllerTests
 
             var controller = new TokenController(tokenServiceMock.Object);
 
-            // Act
             var result = controller.GetToken(usuario) as OkObjectResult;
 
-            // Assert
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
             Assert.Equal("valid_token", result.Value);
         }
 
         [Fact]
-        public void GetToken_InvalidUser_ReturnsUnauthorizedResult()
+        public void GetTokenInvalidUserTokenFail()
         {
-            // Arrange
             var usuario = new User
             {
                 Username = "invalid",
@@ -47,10 +43,8 @@ namespace Fiap.Team10.Contacts.Tests.ControllerTests
 
             var controller = new TokenController(tokenServiceMock.Object);
 
-            // Act
             var result = controller.GetToken(usuario) as UnauthorizedResult;
 
-            // Assert
             Assert.NotNull(result);
             Assert.Equal(401, result.StatusCode);
         }
