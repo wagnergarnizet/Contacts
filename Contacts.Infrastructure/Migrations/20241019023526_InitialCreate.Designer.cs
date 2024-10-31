@@ -32,7 +32,7 @@ namespace Contacts.Infrastructure.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DDD")
+                    b.Property<string>("AreaCode")
                         .IsRequired()
                         .HasMaxLength(2)
                         .HasColumnType("varchar(2)");
