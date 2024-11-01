@@ -104,7 +104,7 @@ namespace Fiap.Team10.Contacts.Presentation.Controllers
         /// <returns> Retorna uma lista de contatos filtrados pelo DDD no formato Json</returns>
         [HttpGet("ddd/{areaCode}")]
         [AllowAnonymous]
-        public async Task<IEnumerable<ContactDto>> GetContactsByDDD(string areaCode)
+        public async Task<IEnumerable<ContactDto>> GetContactsByAreaCode(string areaCode)
         {
             CustomLogger.Arquivo = true;
             _logger.LogInformation("Buscando contatos pelo DDD {DDD}", areaCode);

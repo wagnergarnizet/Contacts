@@ -13,7 +13,6 @@ namespace Fiap.Team10.Contacts.Domain.DTOs.EntityDTOs
 
         [Required(ErrorMessage = "DDD é obrigatório")]
         [StringLength(2, MinimumLength = 2, ErrorMessage = "DDD deve conter dois caracteres")]
-
         public required string AreaCode { get; set; }
 
         [Required(ErrorMessage = "Telefone é obrigatório")]

@@ -167,7 +167,7 @@ namespace Fiap.Team10.Contacts.Tests.ControllerTests
 
             _contactAppServiceMock.Setup(service => service.GetContactsByAreaCodeAsync(areaCode)).ReturnsAsync(expectedResult);
 
-            var resultContactsList = await _controller.GetContactsByDDD(areaCode);
+            var resultContactsList = await _controller.GetContactsByAreaCode(areaCode);
 
             Assert.NotNull(resultContactsList);
             Assert.Equal(expectedResult.Count, resultContactsList.Count());
@@ -180,7 +180,7 @@ namespace Fiap.Team10.Contacts.Tests.ControllerTests
             var areaCode = "11";
             _contactAppServiceMock.Setup(service => service.GetContactsByAreaCodeAsync(areaCode)).ThrowsAsync(new Exception("Não foi possivel recuperar os contatos"));
 
-            var result = await _controller.GetContactsByDDD(areaCode);
+            var result = await _controller.GetContactsByAreaCode(areaCode);
 
             Assert.Empty(result);
             _loggerMock.Equals("Não foi possivel recuperar os contatos");
