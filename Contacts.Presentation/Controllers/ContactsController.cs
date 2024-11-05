@@ -103,8 +103,8 @@ namespace Fiap.Team10.Contacts.Presentation.Controllers
         /// <param name="areaCode"> informar o DDD do contato</param>
         /// <returns> Retorna uma lista de contatos filtrados pelo DDD no formato Json</returns>
         [HttpGet("ddd/{areaCode}")]
-        [AllowAnonymous]
-        public async Task<IEnumerable<ContactDto>> GetContactsByAreaCode(string areaCode)
+        [Authorize]
+        public async Task<IEnumerable<ContactDto>> GetContactsByDDD(string areaCode)
         {
             CustomLogger.Arquivo = true;
             _logger.LogInformation("Buscando contatos pelo DDD {DDD}", areaCode);
