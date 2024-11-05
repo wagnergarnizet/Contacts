@@ -28,7 +28,7 @@ namespace Fiap.Team10.Contacts.Infrastructure.Repositories
         }
 
         public async Task<Contact> GetByIdAsync(int id)
-            => await _context.Contacts.FindAsync(id) ?? throw new ArgumentNullException(nameof(id));
+            => await _context.Contacts.FindAsync(id);
         
         public async Task<IEnumerable<Contact>> GetAllAsync()
             => await _context.Contacts.ToListAsync();
