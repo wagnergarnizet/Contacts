@@ -14,7 +14,7 @@ namespace Fiap.Team10.Contacts.Infrastructure.Data
             if (!optionsBuilder.IsConfigured)
                 optionsBuilder.UseMySql("DefaultConnection",
                                         new MySqlServerVersion(new Version(8, 0, 21)),
-                                        mySqlOptions => mySqlOptions.MigrationsAssembly("Contacts.Infrastructure"));
+                                        mySqlOptions => mySqlOptions.MigrationsAssembly("Fiap.Team10.Contacts.Infrastructure"));
         }
 
         public DbSet<Contact> Contacts { get; set; }

@@ -1,0 +1,79 @@
+Log de Execução: Information: 0 - Buscando contatos pelo DDD 11
+Log de Execução: Information: 20101 - Executed DbCommand (4ms) [Parameters=[@__areaCode_0='?' (Size = 2)], CommandType='Text', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`AreaCode`, `c`.`Email`, `c`.`Name`, `c`.`Phone`
+FROM `Contacts` AS `c`
+WHERE `c`.`AreaCode` = @__areaCode_0
+Log de Execução: Information: 0 - Buscando contatos pelo DDD 12
+Log de Execução: Information: 20101 - Executed DbCommand (3ms) [Parameters=[@__areaCode_0='?' (Size = 2)], CommandType='Text', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`AreaCode`, `c`.`Email`, `c`.`Name`, `c`.`Phone`
+FROM `Contacts` AS `c`
+WHERE `c`.`AreaCode` = @__areaCode_0
+Log de Execução: Information: 0 - Buscando contatos pelo DDD 11
+Log de Execução: Information: 20101 - Executed DbCommand (4ms) [Parameters=[@__areaCode_0='?' (Size = 2)], CommandType='Text', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`AreaCode`, `c`.`Email`, `c`.`Name`, `c`.`Phone`
+FROM `Contacts` AS `c`
+WHERE `c`.`AreaCode` = @__areaCode_0
+Log de Execução: Information: 0 - Buscando contatos pelo DDD 12
+Log de Execução: Information: 20101 - Executed DbCommand (3ms) [Parameters=[@__areaCode_0='?' (Size = 2)], CommandType='Text', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`AreaCode`, `c`.`Email`, `c`.`Name`, `c`.`Phone`
+FROM `Contacts` AS `c`
+WHERE `c`.`AreaCode` = @__areaCode_0
+Log de Execução: Information: 0 - Buscando contatos pelo DDD 51
+Log de Execução: Information: 20101 - Executed DbCommand (16ms) [Parameters=[@__areaCode_0='?' (Size = 2)], CommandType='Text', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`AreaCode`, `c`.`Email`, `c`.`Name`, `c`.`Phone`
+FROM `Contacts` AS `c`
+WHERE `c`.`AreaCode` = @__areaCode_0
+Log de Execução: Information: 0 - Deletando contato de ID 1
+Log de Execução: Information: 20101 - Executed DbCommand (4ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`AreaCode`, `c`.`Email`, `c`.`Name`, `c`.`Phone`
+FROM `Contacts` AS `c`
+WHERE `c`.`Id` = @__p_0
+LIMIT 1
+Log de Execução: Information: 20101 - Executed DbCommand (32ms) [Parameters=[@p0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SET AUTOCOMMIT = 1;
+DELETE FROM `Contacts`
+WHERE `Id` = @p0;
+SELECT ROW_COUNT();
+Log de Execução: Information: 0 - Buscando todos os contatos
+Log de Execução: Information: 20101 - Executed DbCommand (13ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`AreaCode`, `c`.`Email`, `c`.`Name`, `c`.`Phone`
+FROM `Contacts` AS `c`
+Log de Execução: Information: 0 - Buscando todos os contatos
+Log de Execução: Information: 20101 - Executed DbCommand (9ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`AreaCode`, `c`.`Email`, `c`.`Name`, `c`.`Phone`
+FROM `Contacts` AS `c`
+Log de Execução: Information: 0 - Atualizando contato de ID 3
+Log de Execução: Information: 20101 - Executed DbCommand (4ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`AreaCode`, `c`.`Email`, `c`.`Name`, `c`.`Phone`
+FROM `Contacts` AS `c`
+WHERE `c`.`Id` = @__p_0
+LIMIT 1
+Log de Execução: Information: 20101 - Executed DbCommand (36ms) [Parameters=[@p4='?' (DbType = Int32), @p0='?' (Size = 2), @p1='?' (Size = 100), @p2='?' (Size = 100), @p3='?' (Size = 15)], CommandType='Text', CommandTimeout='30']
+SET AUTOCOMMIT = 1;
+UPDATE `Contacts` SET `AreaCode` = @p0, `Email` = @p1, `Name` = @p2, `Phone` = @p3
+WHERE `Id` = @p4;
+SELECT ROW_COUNT();
+Log de Execução: Information: 0 - Atualizando contato de ID 3
+Log de Execução: Information: 20101 - Executed DbCommand (19ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`AreaCode`, `c`.`Email`, `c`.`Name`, `c`.`Phone`
+FROM `Contacts` AS `c`
+WHERE `c`.`Id` = @__p_0
+LIMIT 1
+Log de Execução: Information: 20101 - Executed DbCommand (22ms) [Parameters=[@p4='?' (DbType = Int32), @p0='?' (Size = 2), @p1='?' (Size = 100), @p2='?' (Size = 100), @p3='?' (Size = 15)], CommandType='Text', CommandTimeout='30']
+SET AUTOCOMMIT = 1;
+UPDATE `Contacts` SET `AreaCode` = @p0, `Email` = @p1, `Name` = @p2, `Phone` = @p3
+WHERE `Id` = @p4;
+SELECT ROW_COUNT();
+Log de Execução: Information: 0 - Buscando todos os contatos
+Log de Execução: Information: 20101 - Executed DbCommand (19ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`AreaCode`, `c`.`Email`, `c`.`Name`, `c`.`Phone`
+FROM `Contacts` AS `c`
+Log de Execução: Information: 0 - Buscando todos os contatos
+Log de Execução: Information: 20101 - Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`AreaCode`, `c`.`Email`, `c`.`Name`, `c`.`Phone`
+FROM `Contacts` AS `c`
+Log de Execução: Information: 0 - Buscando contatos pelo DDD 51
+Log de Execução: Information: 20101 - Executed DbCommand (9ms) [Parameters=[@__areaCode_0='?' (Size = 2)], CommandType='Text', CommandTimeout='30']
+SELECT `c`.`Id`, `c`.`AreaCode`, `c`.`Email`, `c`.`Name`, `c`.`Phone`
+FROM `Contacts` AS `c`
+WHERE `c`.`AreaCode` = @__areaCode_0

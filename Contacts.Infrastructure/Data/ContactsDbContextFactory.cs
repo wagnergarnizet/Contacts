@@ -17,7 +17,7 @@ namespace Fiap.Team10.Contacts.Infrastructure.Data
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
             optionsBuilder.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 21)),
-                                    mySqlOptions => mySqlOptions.MigrationsAssembly("Contacts.Infrastructure"));
+                                    mySqlOptions => mySqlOptions.MigrationsAssembly("Fiap.Team10.Contacts.Infrastructure"));
 
             return new ContactsDbContext(optionsBuilder.Options);
         }
