@@ -1,26 +1,17 @@
 ﻿using System.Collections.Concurrent;
 
-namespace Contacts.Presentation.Logging
+namespace Fiap.Team10.Contacts.Presentation.Logging
 {
-    public class CustomLoggerProvider : ILoggerProvider
+    public class CustomLoggerProvider(CustomLoggerProviderConfiguration _loggerConfig) : ILoggerProvider
     {
 
-        private readonly CustomLoggerProviderConfiguration loggerConfig;
+        private readonly CustomLoggerProviderConfiguration loggerConfig = _loggerConfig;
         private readonly ConcurrentDictionary<string, CustomLogger> loggers = new ConcurrentDictionary<string, CustomLogger>();
 
-        public CustomLoggerProvider(CustomLoggerProviderConfiguration _loggerConfig)
-        {
-            this.loggerConfig = _loggerConfig;
-        }
-
         public ILogger CreateLogger(string categoryName)
-        {
-            return loggers.GetOrAdd(categoryName, name => new CustomLogger(name, loggerConfig));
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
+            => loggers.GetOrAdd(categoryName, name => new CustomLogger(name, loggerConfig));
+        
+        public void Dispose()        
+           => throw new NotImplementedException();        
     }
 }

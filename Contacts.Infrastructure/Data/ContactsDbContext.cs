@@ -1,20 +1,20 @@
-﻿using Contacts.Domain.Entities;
+﻿using Fiap.Team10.Contacts.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Contacts.Infrastructure.Data
+namespace Fiap.Team10.Contacts.Infrastructure.Data
 {
     public class ContactsDbContext : DbContext
     {
-        public ContactsDbContext(DbContextOptions<ContactsDbContext> options) : base(options) { }
+        public ContactsDbContext(DbContextOptions<ContactsDbContext> options) : base(options)
+        {
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-            {
                 optionsBuilder.UseMySql("DefaultConnection",
-                    new MySqlServerVersion(new Version(8, 0, 21)),
-                    mySqlOptions => mySqlOptions.MigrationsAssembly("Contacts.Infrastructure"));
-            }
+                                        new MySqlServerVersion(new Version(8, 0, 21)),
+                                        mySqlOptions => mySqlOptions.MigrationsAssembly("Fiap.Team10.Contacts.Infrastructure"));
         }
 
         public DbSet<Contact> Contacts { get; set; }
@@ -29,7 +29,7 @@ namespace Contacts.Infrastructure.Data
 
                 // Configuração da chave primária
                 entity.HasKey(e => e.Id);
-                
+
                 entity.Property(e => e.Id)
                     .ValueGeneratedOnAdd();
 
@@ -42,7 +42,7 @@ namespace Contacts.Infrastructure.Data
                     .IsRequired()
                     .HasMaxLength(15);
 
-                entity.Property(e => e.DDD)
+                entity.Property(e => e.AreaCode)
                     .IsRequired()
                     .HasMaxLength(2);
 
@@ -52,9 +52,7 @@ namespace Contacts.Infrastructure.Data
 
                 entity.HasIndex(e => e.Email)
                     .IsUnique();
-               
             });
-
         }
     }
 }

@@ -1,12 +1,9 @@
-﻿using Contacts.Domain.Entities;
-using Contacts.Domain.Repositories;
-using Contacts.Infrastructure.Data;
+﻿using Fiap.Team10.Contacts.Domain.Entities;
+using Fiap.Team10.Contacts.Domain.Interfaces.Repositories;
+using Fiap.Team10.Contacts.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Contacts.Infrastructure.Repositories
+namespace Fiap.Team10.Contacts.Infrastructure.Repositories
 {
     public class ContactRepository : IContactRepository
 
@@ -31,19 +28,13 @@ namespace Contacts.Infrastructure.Repositories
         }
 
         public async Task<Contact> GetByIdAsync(int id)
-        {
-            return await _context.Contacts.FindAsync(id) ?? throw new ArgumentNullException(nameof(id));
-        }
-
+            => await _context.Contacts.FindAsync(id);
+        
         public async Task<IEnumerable<Contact>> GetAllAsync()
-        {
-            return await _context.Contacts.ToListAsync();
-        }
-
-        public async Task<IEnumerable<Contact>> GetByDDDAsync(string ddd)
-        {
-            return await _context.Contacts.Where(c => c.DDD == ddd).ToListAsync();
-        }
+            => await _context.Contacts.ToListAsync();
+        
+        public async Task<IEnumerable<Contact>> GetByAreaCodeAsync(string areaCode)        
+            => await _context.Contacts.Where(c => c.AreaCode == areaCode).ToListAsync();        
 
         public async Task DeleteAsync(int id)
         {

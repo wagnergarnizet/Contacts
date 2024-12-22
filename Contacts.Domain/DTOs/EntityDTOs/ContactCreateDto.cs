@@ -1,14 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Fiap.Team10.Contacts.Domain.Entities
+namespace Fiap.Team10.Contacts.Domain.DTOs.EntityDTOs
 {
-    [ExcludeFromCodeCoverage]
-    public class Contact
-    {
-        [Key]
-        public int Id { get; set; }
 
+    [ExcludeFromCodeCoverage]
+    public class ContactCreateDto
+    {
         [Required(ErrorMessage = "Nome é obrigatório")]
         [StringLength(100, ErrorMessage = "Nome não pode ter mais de 100 caracteres")]
         public required string Name { get; set; }
@@ -21,8 +19,10 @@ namespace Fiap.Team10.Contacts.Domain.Entities
         [Phone(ErrorMessage = "Não é um formato válido de telefone")]
         public required string Phone { get; set; }
 
+
         [Required(ErrorMessage = "Email é obrigatório")]
         [EmailAddress(ErrorMessage = "Email inválido")]
         public required string Email { get; set; }
+
     }
 }

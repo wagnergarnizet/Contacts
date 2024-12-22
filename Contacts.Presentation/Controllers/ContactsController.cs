@@ -1,30 +1,17 @@
-﻿// Contacts.Presentation/Controllers/ContactsController.cs
-using Contacts.Application.DTOs;
-using Contacts.Application.Services;
-using Contacts.Domain.Entities;
-using Contacts.Presentation.Logging;
+﻿using Fiap.Team10.Contacts.Domain.DTOs.EntityDTOs;
+using Fiap.Team10.Contacts.Domain.Interfaces.Applications;
+using Fiap.Team10.Contacts.Presentation.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace Contacts.Presentation.Controllers
+namespace Fiap.Team10.Contacts.Presentation.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ContactsController : ControllerBase
+    public class ContactsController(IContactApplication contactService, ILogger<ContactsController> logger) : ControllerBase
     {
-        private readonly ContactService _contactService;
-        private readonly ILogger<ContactsController> _logger;
-
-        public ContactsController(ContactService contactService, ILogger<ContactsController> logger)
-        {
-            _contactService = contactService;
-            _logger = logger;
-        }
-
+        private readonly IContactApplication _contactService = contactService;
+        private readonly ILogger<ContactsController> _logger = logger;
 
         /// <summary>
         /// Metodo para adicionar um novo contato de forma assíncrona.
@@ -36,10 +23,13 @@ namespace Contacts.Presentation.Controllers
         public async Task<IActionResult> AddContact(ContactCreateDto contact)
         {
             _logger.LogInformation("Adicionando novo contato");
-            await _contactService.AddContactAsync(contact);
-            return Ok();
-        }
+            var insertedObject = await _contactService.AddContactAsync(contact);
 
+            if (insertedObject.Success)
+                return Ok(insertedObject.Message);
+            else
+                return BadRequest(insertedObject.Message);
+        }
 
         /// <summary>
         /// Método para atualizar um contato de forma assíncrona.
@@ -52,10 +42,13 @@ namespace Contacts.Presentation.Controllers
         public async Task<IActionResult> UpdateContact(ContactUpdateDto contact)
         {
             _logger.LogInformation("Atualizando contato de ID {ID}", contact.Id);
-            await _contactService.UpdateContactAsync(contact);
-            return Ok();
-        }
+            var updatedObject = await _contactService.UpdateContactAsync(contact);
 
+            if (updatedObject.Success)
+                return Ok(updatedObject.Message);
+            else 
+                return BadRequest(updatedObject.Message);
+        }
 
         /// <summary>
         /// Método para buscar todos os contatos de forma assíncrona.
@@ -69,8 +62,6 @@ namespace Contacts.Presentation.Controllers
             return await _contactService.GetAllContactsAsync();
         }
 
-
-
         /// <summary>
         /// Método para buscar um contato pelo ID de forma assíncrona.
         /// </summary>
@@ -80,17 +71,17 @@ namespace Contacts.Presentation.Controllers
         [Authorize]
         public async Task<ActionResult<ContactDto>> GetContactById(int id)
         {
-            _logger.LogInformation("Buscando contato de ID {ID}", id);
+            _logger.LogInformation($"Buscando contato de ID {id}");
             var contact = await _contactService.GetContactByIdAsync(id);
             if (contact == null)
             {
-                _logger.LogWarning("Contato de ID {ID} não encontrado", id);
+                _logger.LogWarning($"Contato de ID {id} não encontrado");
                 return NotFound();
             }
-            _logger.LogInformation("Contato de ID {ID} encontrado", id);
+
+            _logger.LogInformation($"Contato de ID {id} encontrado");
             return contact;
         }
-
 
         /// <summary>
         /// Método para deletar um contato de forma assíncrona.
@@ -106,30 +97,27 @@ namespace Contacts.Presentation.Controllers
             return Ok();
         }
 
-
         /// <summary>
         /// Método para buscar contatos por DDD de forma assíncrona.
         /// </summary>
-        /// <param name="ddd"> informar o DDD do contato</param>
+        /// <param name="areaCode"> informar o DDD do contato</param>
         /// <returns> Retorna uma lista de contatos filtrados pelo DDD no formato Json</returns>
-        [HttpGet("ddd/{ddd}")]
-        [AllowAnonymous]
-        public async Task<IEnumerable<ContactDto>> GetContactsByDDD(string ddd)
+        [HttpGet("ddd/{areaCode}")]
+        [Authorize]
+        public async Task<IEnumerable<ContactDto>> GetContactsByDDD(string areaCode)
         {
             CustomLogger.Arquivo = true;
-            _logger.LogInformation("Buscando contatos pelo DDD {DDD}", ddd);
-
-            
+            _logger.LogInformation("Buscando contatos pelo DDD {DDD}", areaCode);
+                        
             try
             {
-                return await _contactService.GetContactsByDDDAsync(ddd);
+                return await _contactService.GetContactsByAreaCodeAsync(areaCode);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, ex);
                 return Enumerable.Empty<ContactDto>();
             }
-
         }
     }
 }

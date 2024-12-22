@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Contacts.Infrastructure.Migrations
 {
     [DbContext(typeof(ContactsDbContext))]
-    [Migration("20241019023526_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241103211647_SegundaExecucao")]
+    partial class SegundaExecucao
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace Contacts.Infrastructure.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("Contacts.Domain.Entities.Contact", b =>
+            modelBuilder.Entity("Fiap.Team10.Contacts.Domain.Entities.Contact", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
